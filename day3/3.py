@@ -3,16 +3,19 @@
 import requests
 from typing import List
 import json
+import os
 
+a = os.environ['AOC']
 headers = {
-    'cookie': 'session=53616c7465645f5fb6650b7a7797453d6ab65881f84067c512d4764eb835a13e17de8bbd5ab3b013a88b59e97bd91eeed063140bab6a770528c5549259ae6c58'
+    'cookie': f'session={a}'
 }
 x = requests.get('https://adventofcode.com/2022/day/3/input', headers=headers)
 text = str(x.text)
 data = text.strip().split('\n')
 
-
 def let_to_num(letter:str) -> int:
+    """ Creating functions that does the what the problem is asking 
+    let_to_num takes in a character and turns that into a number"""
     num = ord(letter)
     if num >= ord('A') and num<= ord('Z'):
         return num - ord('A') + 27
@@ -21,14 +24,16 @@ def let_to_num(letter:str) -> int:
     else: 
         raise Exception()
 
-#Part 1    
 def compare(str1:str, str2:str) -> str:
+    """Part 1, compare twos strings together 
+    returns the character that they matched on"""
     for i in str1:
         for j in str2:
             if i == j:
                 return i
     raise Exception()
 
+#This for loop compares and sums the priority of the individual character
 priority = 0 
 for d in data:
     length = len(d)
@@ -46,16 +51,18 @@ for d in data:
         else:
             raise Exception('invald')
     priority += let_to_num(compare(first_half,second_half))
-print(f'Priority is {priority}')
+print(f'Priority is {priority}.')
 
-#Part2 
-def divide_chunks(l, n):
+
+def divide_chunks(l:List[str], n:int) -> List[List[str]]:
+    """Takes in a list and divides it into chunks of n"""
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
-#print(json.dumps(list(divide_chunks(data, 3))))
 
 def compare3(str1:str, str2:str, str3:str) -> str:
+    """Part 2, compares 3 strings together and returns the character
+    that is matched in all 3"""
     for i in str1:
         for j in str2:
             for k in str3:
